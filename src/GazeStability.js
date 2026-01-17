@@ -28,7 +28,7 @@ export const useGazeStability = (onZoneOutTrigger) => {
       zoneOutTimer.current = setTimeout(() => {
         setIsZoningOut(true);
         onZoneOutTrigger(); // This will eventually show the popup
-      }, 10000);
+      }, 5000);
     } else if (!IS_TOO_STILL) {
       // If they move their eyes, reset the timer
       if (zoneOutTimer.current) {
