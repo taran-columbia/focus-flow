@@ -25,8 +25,12 @@ FocusFlow is a AI-powered "Study Guard" designed for video content. It utilizes 
    ```bash
    git clone [https://github.com/taran-columbia/focus-flow](https://github.com/taran-columbia/focus-flow)
    cd focus-flow
-2. Install packages using npm and run ``` npm run dev
+2. Install packages using npm and run:
+    ```bash
+    npm run dev
 
 ### Useful Resources
 
-1. MediaPipe Landmarks [https://storage.googleapis.com/mediapipe-assets/documentation/mediapipe_face_landmark_fullsize.png] (https://storage.googleapis.com/mediapipe-assets/documentation/mediapipe_face_landmark_fullsize.png)
+1. MediaPipe Research Paper (for understanding of architecture followed) - https://arxiv.org/pdf/1906.08172
+2. Documentation - https://ai.google.dev/edge/mediapipe/solutions/vision/face_landmarker#configurations_options
+3. MediaPipe Landmarks - https://storage.googleapis.com/mediapipe-assets/documentation/mediapipe_face_landmark_fullsize.png
