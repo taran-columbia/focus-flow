@@ -1,19 +1,32 @@
-# React + Vite
+# FocusFlow AI 👁️📺
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+FocusFlow is a AI-powered "Study Guard" designed for video content. It utilizes MediaPipe Face Landmarker and Blendshapes to monitor gaze patterns and automatically manage video playback to ensure active engagement.
 
-Currently, two official plugins are available:
+## ✨ Key Features
+- **Spatial Gaze Tracking:** Calibrates a personal "Focus Zone" using an Iris-to-Eye-Corner Ratio system, making the detection robust to slight head movements.
+- **Smart Pause (3s Buffer):** Automatically pauses video if the user looks away or closes their eyes for more than 5 continuous seconds.
+- **Zoning Out Detection:** Monitors gaze stability using standard deviation to identify when a user is "staring through" the screen rather than processing information.
+- **Responsive Dashboard:** Built with React and Tailwind CSS, featuring a live monitor feed and integrated YouTube IFrame API control.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🛠️ Tech Stack
+- **Frontend:** React (Vite), Tailwind CSS
+- **AI/ML:** MediaPipe Solutions (Face Landmarker, Blendshapes)
+- **Video:** YouTube IFrame Player API
+- **Algorithms:** Relative Coordinate Mapping, Temporal Thresholding for Blink/Sleep detection.
 
-## React Compiler
+## 🚀 Getting Started
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### Prerequisites
+- Node.js (v18+)
+- Modern web browser with webcam access
 
-## Expanding the ESLint configuration
+### Installation
+1. Clone the repository:
+   ```bash
+   git clone [https://github.com/taran-columbia/focus-flow](https://github.com/taran-columbia/focus-flow)
+   cd focus-flow
+2. Install packages using npm and run ``` npm run dev
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### Useful Resources
 
-
-https://storage.googleapis.com/mediapipe-assets/documentation/mediapipe_face_landmark_fullsize.png
+1. MediaPipe Landmarks [https://storage.googleapis.com/mediapipe-assets/documentation/mediapipe_face_landmark_fullsize.png] (https://storage.googleapis.com/mediapipe-assets/documentation/mediapipe_face_landmark_fullsize.png)
