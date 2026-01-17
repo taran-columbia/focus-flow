@@ -3,7 +3,7 @@ export const analyzeFocus = (landmarks, blendshapes) => {
   const eyeTop = landmarks[159]; // Center of upper eyelid
   const eyeBottom = landmarks[145]; // Center of lower eyelid
   
-  // 1. Horizontal Ratio (Already working for you)
+  // 1. Horizontal Ratio 
   const leftInner = landmarks[133];
   const leftOuter = landmarks[33];
   const horizontalRatio = (leftIris.x - leftInner.x) / (leftOuter.x - leftInner.x);
