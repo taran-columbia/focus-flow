@@ -223,7 +223,7 @@ const handleSwitchVideo = () => {
           <div className="flex justify-between border-b border-slate-700 pb-2">
             <span className="text-slate-400">Focus Status</span>
             <span className={focusStatus === "FOCUSED" ? "text-emerald-400 font-bold" : "text-rose-400 font-bold"}>
-              {focusStatus}
+              {isPausedRef.current == true ? '-' : focusStatus}
             </span>
           </div>
           <div className="flex justify-between border-b border-slate-700 pb-2">
