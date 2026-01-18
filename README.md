@@ -23,7 +23,7 @@ FocusFlow is a AI-powered "Study Guard" designed for video content. It utilizes 
 ### Installation
 1. Clone the repository:
    ```bash
-   git clone [https://github.com/taran-columbia/focus-flow](https://github.com/taran-columbia/focus-flow)
+   git clone https://github.com/taran-columbia/focus-flow
    cd focus-flow
 2. Install packages using npm and run:
     ```bash
