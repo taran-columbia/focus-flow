@@ -17,7 +17,7 @@ function App() {
   const [isReady, setIsReady] = useState(false);
   const [currentLandmarks, setCurrentLandmarks] = useState(null);
   const [focusStatus, setFocusStatus] = useState("CALIBRATING");
-  const [zoneOutAlerted, setZoneOutAlerted] = useState(false);
+  // const [zoneOutAlerted, setZoneOutAlerted] = useState(false);
 
 
 
@@ -28,7 +28,7 @@ function App() {
 
   // Gaze Stability Hook: Handles the "Zoning Out" detection
   const { checkStability, isZoningOut } = useGazeStability(() => {
-    setZoneOutAlerted(true); // Signal to show the "Are you still there?" modal
+    // setZoneOutAlerted(true); // Signal to show the "Are you still there?" modal
   });
   const handlePlayerStateChange = (paused) => {
     isPausedRef.current = paused;
@@ -125,61 +125,118 @@ function App() {
     if( isZoningOut) {
       triggerAIPause();
     }
-  }, [isZoningOut, focusStatus]);
+  }, [isZoningOut]);
+
+  const handleRecalibrate = () => {
+  setBounds(null); // Triggers the CalibrationUI to reappear
+  if (boundsRef) boundsRef.current = null;
+  console.log("Recalibrating: Bounds cleared.");
+};
+
+const handleSwitchVideo = () => {
+  // Clear all video and focus states
+  // setEmbedId(""); 
+  if (ytPlayerRef.current) {
+      ytPlayerRef.current.clearEmbed(); // Clear the current video
+  }
+  // setZoneOutAlerted(false);
+  setFocusStatus("WAITING FOR VIDEO TO PLAY");
+  // isPausedRef.current = false;
+  console.log("Switching Video: UI reset.");
+};
 
   return (
-    <div style={{ fontFamily: 'Arial, sans-serif', padding: '20px', backgroundColor: '#0f172a', minHeight: '100vh', width: '97vw', color: 'white' }}>
-      <header style={{ marginBottom: '20px' }}>
-        <h1>FocusFlow AI</h1>
-        {!isReady && <p style={{ color: '#fbbf24' }}>Initializing AI Engine...</p>}
-      </header>
-
-      {/* PHASE 1: Calibration Overlay */}
-      {!isCalibrated && isReady && (
-        <CalibrationUI
-          landmarks={currentLandmarks}
-          onComplete={(finalBounds) => setBounds(finalBounds)}
-        />
-      )}
-
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 350px', gap: '20px' }}>
-        {/* Main Content: Video Player */}
-        <section>
-          <YouTubePlayer
-            ref={ytPlayerRef}
-            handlePlayerStateChange={handlePlayerStateChange}
-          />
-          {(zoneOutAlerted || focusStatus === "OUT_OF_FOCUS") && (
-            <div style={{ marginTop: '20px', padding: '20px', backgroundColor: '#ef4444', borderRadius: '8px' }}>
-              <h3>Zoning Out Detected!</h3>
-              <p>Are you still focusing on the video? Resume the video to reset.</p>
-            </div>
-          )}
-        </section>
-
-        {/* Sidebar: AI Monitor */}
-        <aside style={{ backgroundColor: '#1e293b', padding: '15px', borderRadius: '12px' }}>
-          <h2 style={{ fontSize: '1.2rem', marginBottom: '10px' }}>AI Insights</h2>
-
-          <div style={{ position: 'relative', width: '100%', aspectRatio: '4/3', backgroundColor: '#000', borderRadius: '8px', overflow: 'hidden' }}>
-            <video
-              ref={videoRef}
-              autoPlay
-              playsInline
-              muted
-              style={{ width: '100%', height: '100%', objectFit: 'cover', transform: 'scaleX(-1)' }}
-            />
-          </div>
-
-          <div style={{ marginTop: '15px' }}>
-            <p>Focus Status: <strong style={{ color: focusStatus === 'FOCUSED' ? '#10b981' : '#f43f5e' }}>{focusStatus}</strong></p>
-            <p>Spatial Calibration: {isCalibrated ? '✅ DONE' : '❌ PENDING'}</p>
-            <p>Stability State: {isZoningOut ? '⚠️ ZONING OUT' : '🟢 ACTIVE'}</p>
-          </div>
-        </aside>
+  <div className="min-h-screen bg-slate-900 text-slate-100 p-6 font-sans">
+    {/* Header & Controls */}
+    <header className="flex justify-between items-center mb-8 bg-slate-800 p-4 rounded-xl border border-slate-700 shadow-lg">
+      <div>
+        <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-emerald-400 bg-clip-text text-transparent">
+          FocusFlow AI
+        </h1>
+        <p className="text-slate-400 text-sm">Academic Video Guard</p>
       </div>
+
+      <div className="flex gap-4">
+        <button 
+          onClick={handleRecalibrate}
+          className="px-4 py-2 bg-slate-700 hover:bg-slate-600 rounded-lg transition-colors border border-slate-600 text-sm font-medium"
+        >
+          Recalibrate
+        </button>
+        <button 
+          onClick={handleSwitchVideo}
+          className="px-4 py-2 bg-blue-600 hover:bg-blue-500 rounded-lg transition-colors text-sm font-medium shadow-lg shadow-blue-900/20"
+        >
+          New Video
+        </button>
+      </div>
+    </header>
+
+    {/* Calibration Phase */}
+    {!isCalibrated && isReady && (
+      <CalibrationUI 
+        landmarks={currentLandmarks} 
+        onComplete={(finalBounds) => {
+          setBounds(finalBounds);
+          boundsRef.current = finalBounds;
+        }} 
+      />
+    )}
+
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      {/* Video Section */}
+      <div className="lg:col-span-2 space-y-4">
+        <YouTubePlayer 
+          ref={ytPlayerRef} 
+          handlePlayerStateChange={handlePlayerStateChange}
+          // Pass the embedId state down if you want to manage URL input in App.js
+        />
+        
+        {/* {zoneOutAlerted && (
+          <div className="p-6 bg-red-900/50 border border-red-500/50 rounded-xl animate-pulse">
+            <h3 className="text-xl font-bold text-red-200">Zoning Out Detected</h3>
+            <p className="text-red-300">Your eyes have been static for too long. Focus back on the content to resume.</p>
+          </div>
+        )} */}
+      </div>
+
+      {/* Monitoring Sidebar */}
+      <aside className="bg-slate-800 p-6 rounded-2xl border border-slate-700 h-fit sticky top-6">
+        <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
+          <span className="w-2 h-2 bg-emerald-500 rounded-full"></span>
+          AI Live Monitor
+        </h2>
+        
+        <div className="relative rounded-xl overflow-hidden bg-black aspect-video border-2 border-slate-700 mb-6">
+          <video 
+            ref={videoRef} 
+            autoPlay 
+            muted 
+            className="w-full h-full object-cover scale-x-[-1]" 
+          />
+          <div className="absolute top-2 right-2 px-2 py-1 bg-black/60 backdrop-blur-md rounded text-[10px] uppercase tracking-widest font-bold">
+            Live Feed
+          </div>
+        </div>
+
+        <div className="space-y-4 text-sm">
+          <div className="flex justify-between border-b border-slate-700 pb-2">
+            <span className="text-slate-400">Focus Status</span>
+            <span className={focusStatus === "FOCUSED" ? "text-emerald-400 font-bold" : "text-rose-400 font-bold"}>
+              {focusStatus}
+            </span>
+          </div>
+          <div className="flex justify-between border-b border-slate-700 pb-2">
+            <span className="text-slate-400">Gaze Stability</span>
+            <span className={isZoningOut ? "text-orange-400 font-bold" : "text-emerald-400 font-bold"}>
+              {isPausedRef.current == true ? '-' :isZoningOut ? "STALE" : "DYNAMIC"}
+            </span>
+          </div>
+        </div>
+      </aside>
     </div>
-  );
+  </div>
+);
 }
 
 export default App;

@@ -38,7 +38,7 @@ export const useSpatialFocus = (onPauseTrigger) => {
           distractionTimer.current = null;
         }, 5000); // 5-second constant requirement
       }
-      return isEyeClosed ? "EYES_CLOSED" : "OUT_OF_FOCUS";
+      return isEyeClosed ? "EYES CLOSED" : "OUT OF FOCUS";
     } else {
       // If user looks back before 5 seconds, reset the timer
       if (distractionTimer.current) {
