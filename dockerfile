@@ -20,7 +20,7 @@ COPY --from=build /app/dist /usr/share/nginx/html
 # If you are NOT using client-side routing, you can remove this.
 RUN printf '%s\n' \
 'server {' \
-'  listen 80;' \
+'  listen 8080;' \
 '  server_name _;' \
 '  root /usr/share/nginx/html;' \
 '  index index.html;' \
@@ -30,5 +30,5 @@ RUN printf '%s\n' \
 '}' \
 > /etc/nginx/conf.d/default.conf
 
-EXPOSE 80
+EXPOSE 8080
 CMD ["nginx", "-g", "daemon off;"]
